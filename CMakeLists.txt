@@ -25,7 +25,7 @@ set(PROJECT_SOURCES
 )
 
 add_executable(08_PreDataBase
-	${PROJECT_SOURCES}
+        ${PROJECT_SOURCES}
 )
 
 
@@ -38,5 +38,4 @@ target_link_libraries(08_PreDataBase PRIVATE Qt6::Widgets
                                              libintl-9
                                              libpq
                                              libssl-3-x64)
-
 

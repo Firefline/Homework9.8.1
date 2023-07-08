@@ -5,8 +5,8 @@ DataBase::DataBase(QObject *parent)
 {
 
     dataBase = new QSqlDatabase();
-    simpleQuery = new QSqlQuery();
-    tableWidget = new QTableWidget();
+    simpleQuery = new QSqlQueryModel();
+    tableWinget = new QTableView();
 
 
 }
@@ -14,6 +14,8 @@ DataBase::DataBase(QObject *parent)
 DataBase::~DataBase()
 {
     delete dataBase;
+    delete simpleQuery;
+    delete tableWinget;
 }
 
 /*!
@@ -72,14 +74,15 @@ void DataBase::RequestToDB(QString request)
 
     ///Тут должен быть код ДЗ
 
-    *simpleQuery = QSqlQuery(*dataBase);
+    simpleQuery->setQuery (request);
+    simpleQuery->setHeaderData(0, Qt::Horizontal, tr("Title"));
+    simpleQuery->setHeaderData(1, Qt::Horizontal, tr("Release_year"));
+    simpleQuery->setHeaderData(2, Qt::Horizontal, tr("Name"));
 
-    QSqlError err;
-        if(simpleQuery->exec(request) == false){
-            err = simpleQuery->lastError();
-        }
+    tableWinget->setModel(simpleQuery);
+    tableWinget->hideColumn(0);
+    tableWinget->show();
 
-    emit sig_SendStatusRequest(err);
 
 
 }
@@ -90,45 +93,4 @@ void DataBase::RequestToDB(QString request)
 QSqlError DataBase::GetLastError()
 {
     return dataBase->lastError();
-}
-
-void DataBase::ReadAnswerFromDB(int requestType)
-{
-
-    switch (requestType) {
-    case requestAllFilms:
-    case requestComedy:
-    case requestHorrors:
-    {
-        tableWidget->setColumnCount(3);
-        tableWidget->setRowCount(0);
-        QStringList hdrs;
-        hdrs << "Название" << "Описание" << "Жанр";
-        tableWidget->setHorizontalHeaderLabels(hdrs);
-
-        uint32_t conterRows = 0;
-
-        while(simpleQuery->next()){
-            QString str;
-            tableWidget->insertRow(conterRows);
-
-            for(int i = 0; i<tableWidget->columnCount(); ++i){
-
-                str = simpleQuery->value(i).toString();
-                QTableWidgetItem *item = new QTableWidgetItem(str);
-                tableWidget->setItem(tableWidget->rowCount() - 1, i, item);
-
-            }
-            ++conterRows;
-        }
-
-        emit sig_SendDataFromDB(tableWidget, requestAllFilms);
-
-        break;
-    }
-
-    default:
-        break;
-    }
-
 }

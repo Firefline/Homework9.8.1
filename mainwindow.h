@@ -23,9 +23,8 @@ public:
 
 
 public slots:
-    void ScreenDataFromDB(const QTableWidget *widget, int typeRequest);
+    void ScreenDataFromDB(const QTableView *widget, int typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
-    void ReceiveStatusRequestToDB(QSqlError err);
 
 
 private slots:
@@ -48,9 +47,11 @@ private:
     DataBase* dataBase;
     QMessageBox* msg;
 
-    QString request = "SELECT title, description, c.name  FROM film f "
+    QString request = "SELECT title, release_year, c.name  FROM film f "
                       "JOIN film_category fc on f.film_id = fc.film_id "
                       "JOIN category c on c.category_id  = fc.category_id";
+
+    int typeRequest = 0;
 
 };
 #endif // MAINWINDOW_H

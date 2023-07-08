@@ -91,13 +91,16 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="0" rowspan="4">
-     <widget class="QTableWidget" name="tb_result">
+    <item row="0" column="0">
+     <widget class="QLabel" name="lb_statusConnect">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Отключено</string>
       </property>
      </widget>
     </item>
@@ -114,18 +117,8 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lb_statusConnect">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Отключено</string>
-      </property>
-     </widget>
+    <item row="1" column="0" rowspan="4">
+     <widget class="QTableView" name="tb_result"/>
     </item>
    </layout>
   </widget>
@@ -160,23 +153,12 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>tb_result</tabstop>
+  <tabstop>cb_category</tabstop>
+  <tabstop>pb_clear</tabstop>
+  <tabstop>pb_request</tabstop>
+ </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>pb_clear</sender>
-   <signal>clicked()</signal>
-   <receiver>tb_result</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>374</x>
-     <y>486</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>200</x>
-     <y>482</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

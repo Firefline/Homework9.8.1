@@ -44,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
      *  Сигнал для подключения к БД
      */
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
-    connect(dataBase, &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveStatusRequestToDB);
 
 }
 
@@ -98,15 +97,12 @@ void MainWindow::on_act_connect_triggered()
 /*!
  * \brief Обработчик кнопки "Получить"
  */
-
 void MainWindow::on_pb_request_clicked()
 {
 
-    ///Тут должен быть код ДЗ    
-
+    ///Тут должен быть код ДЗ
     auto req = [&]{dataBase->RequestToDB(request);};
-        QtConcurrent::run(req);
-
+    QtConcurrent::run(req);
 }
 
 /*!
@@ -114,39 +110,10 @@ void MainWindow::on_pb_request_clicked()
  * \param widget
  * \param typeRequest
  */
-void MainWindow::ScreenDataFromDB(const QTableWidget *widget, int typeRequest)
+void MainWindow::ScreenDataFromDB(const QTableView *widget, int typeRequest)
 {
-
     ///Тут должен быть код ДЗ
 
-    switch (typeRequest) {
-
-        case requestAllFilms:
-        case requestHorrors:
-        case requestComedy:{
-
-            ui->tb_result->setRowCount(widget->rowCount( ));
-            ui->tb_result->setColumnCount(widget->columnCount( ));
-            QStringList hdrs;
-            for(int i = 0; i < widget->columnCount(); ++i){
-                hdrs << widget->horizontalHeaderItem(i)->text();
-            }
-            ui->tb_result->setHorizontalHeaderLabels(hdrs);
-
-            for(int i = 0; i<widget->rowCount(); ++i){
-                for(int j = 0; j<widget->columnCount(); ++j){
-                    ui->tb_result->setItem(i,j, widget->item(i,j)->clone());
-                }
-            }
-
-            ui->tb_result->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-            break;
-
-        }
-        default:
-            break;
-        }
 
 
 }
@@ -172,47 +139,3 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
     }
 
 }
-
-void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
-{
-
-    if(err.type() != QSqlError::NoError){
-        msg->setText(err.text());
-        msg->exec();
-    }
-    else{
-
-        dataBase->ReadAnswerFromDB(requestAllFilms);
-
-    }
-
-}
-
-
-
-
-void MainWindow::on_cb_category_currentIndexChanged(int index)
-{
-    if (index == 0)
-    {
-        request = "SELECT title, description, c.name  FROM film f "
-                          "JOIN film_category fc on f.film_id = fc.film_id "
-                          "JOIN category c on c.category_id  = fc.category_id";
-
-    }
-    if (index == 1)
-    {
-        request = "SELECT title, description, c.name FROM film f "
-                                "JOIN film_category fc on f.film_id = fc.film_id "
-                                "JOIN category c on c.category_id = fc.category_id "
-                                "WHERE c.name = 'Comedy' ";
-    }
-    if (index == 2)
-    {
-        request = "SELECT title, description, c.name FROM film f "
-                                "JOIN film_category fc on f.film_id = fc.film_id "
-                                "JOIN category c on c.category_id = fc.category_id "
-                                "WHERE c.name = 'Horror' ";
-    }
-}
-
