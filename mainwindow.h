@@ -23,7 +23,7 @@ public:
 
 
 public slots:
-    void ScreenDataFromDB(const QTableView *widget, int typeRequest);
+    void ScreenDataFromDB(QTableView *widget, QString typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
 
 
@@ -47,9 +47,9 @@ private:
     DataBase* dataBase;
     QMessageBox* msg;
 
-    QString request = "SELECT title, release_year, c.name  FROM film f "
+    QString request = "SELECT title, description  FROM film f "
                       "JOIN film_category fc on f.film_id = fc.film_id "
-                      "JOIN category c on c.category_id  = fc.category_id";
+                      "JOIN category c on c.category_id  = fc.category_id ";
 
     int typeRequest = 0;
 

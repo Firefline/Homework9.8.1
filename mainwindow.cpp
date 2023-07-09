@@ -44,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
      *  Сигнал для подключения к БД
      */
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
-
 }
 
 MainWindow::~MainWindow()
@@ -79,9 +78,10 @@ void MainWindow::on_act_connect_triggered()
        ui->lb_statusConnect->setText("Подключение");
        ui->lb_statusConnect->setStyleSheet("color : black");
 
+        dataBase->ConnectToDataBase(dataForConnect);
 
-       auto conn = [&]{dataBase->ConnectToDataBase(dataForConnect);};
-       QtConcurrent::run(conn);
+       //auto conn = [&]{dataBase->ConnectToDataBase(dataForConnect);};
+       //QtConcurrent::run(conn);
 
     }
     else{
@@ -101,8 +101,9 @@ void MainWindow::on_pb_request_clicked()
 {
 
     ///Тут должен быть код ДЗ
-    auto req = [&]{dataBase->RequestToDB(request);};
-    QtConcurrent::run(req);
+    //auto req = [&]{dataBase->RequestToDB(request);};
+    //QtConcurrent::run(req);
+    dataBase->RequestToDB(request);
 }
 
 /*!
@@ -110,12 +111,12 @@ void MainWindow::on_pb_request_clicked()
  * \param widget
  * \param typeRequest
  */
-void MainWindow::ScreenDataFromDB(const QTableView *widget, int typeRequest)
+void MainWindow::ScreenDataFromDB(QTableView *widget, QString typeRequest)
 {
     ///Тут должен быть код ДЗ
-
-
-
+    widget->show();
+    ui->tb_result = widget;
+    ui->tb_result->show();
 }
 /*!
  * \brief Метод изменяет стотояние формы в зависимости от статуса подключения к БД
@@ -139,3 +140,28 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
     }
 
 }
+
+void MainWindow::on_cb_category_currentIndexChanged(int index)
+{
+    if (index == 0)
+    {
+        request = "SELECT title, description  FROM film f "
+                              "JOIN film_category fc on f.film_id = fc.film_id "
+                              "JOIN category c on c.category_id  = fc.category_id ";
+    }
+    if (index == 1)
+    {
+        request = "SELECT title, description  FROM film f "
+                              "JOIN film_category fc on f.film_id = fc.film_id "
+                              "JOIN category c on c.category_id  = fc.category_id "
+                              "WHERE c.name = 'Comedy' ";
+    }
+    if (index == 2)
+    {
+        request = "SELECT title, description  FROM film f "
+                              "JOIN film_category fc on f.film_id = fc.film_id "
+                              "JOIN category c on c.category_id  = fc.category_id "
+                              "WHERE c.name = 'Horror' ";
+    }
+}
+

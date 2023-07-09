@@ -74,17 +74,18 @@ void DataBase::RequestToDB(QString request)
 
     ///Тут должен быть код ДЗ
 
-    simpleQuery->setQuery (request);
+    simpleQuery->setQuery (request, *dataBase);
+    if (simpleQuery->lastError().isValid())
+    {
+        qDebug() << simpleQuery->lastError();
+    }
     simpleQuery->setHeaderData(0, Qt::Horizontal, tr("Title"));
-    simpleQuery->setHeaderData(1, Qt::Horizontal, tr("Release_year"));
-    simpleQuery->setHeaderData(2, Qt::Horizontal, tr("Name"));
+    simpleQuery->setHeaderData(1, Qt::Horizontal, tr("Description"));
 
     tableWinget->setModel(simpleQuery);
-    tableWinget->hideColumn(0);
-    tableWinget->show();
 
-
-
+    emit sig_SendDataFromDB(tableWinget, request);
+    //tableWinget->show();
 }
 
 /*!
