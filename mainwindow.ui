@@ -160,5 +160,22 @@
   <tabstop>pb_request</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pb_clear</sender>
+   <signal>clicked()</signal>
+   <receiver>tb_result</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>476</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>372</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

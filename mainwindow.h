@@ -23,7 +23,7 @@ public:
 
 
 public slots:
-    void ScreenDataFromDB(QTableView *widget, QString typeRequest);
+    void ScreenDataFromDB(QSqlQueryModel *widget, QString typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
 
 
@@ -34,6 +34,8 @@ private slots:
 
 
     void on_cb_category_currentIndexChanged(int index);
+
+    void on_pb_clear_clicked();
 
 signals:
     void sig_RequestToDb(QString request);

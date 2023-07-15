@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
      *  Сигнал для подключения к БД
      */
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
+    connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::on_pb_clear_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -111,11 +112,10 @@ void MainWindow::on_pb_request_clicked()
  * \param widget
  * \param typeRequest
  */
-void MainWindow::ScreenDataFromDB(QTableView *widget, QString typeRequest)
+void MainWindow::ScreenDataFromDB(QSqlQueryModel *widget, QString typeRequest)
 {
     ///Тут должен быть код ДЗ
-    widget->show();
-    ui->tb_result = widget;
+    ui->tb_result->setModel(widget);
     ui->tb_result->show();
 }
 /*!
@@ -163,5 +163,11 @@ void MainWindow::on_cb_category_currentIndexChanged(int index)
                               "JOIN category c on c.category_id  = fc.category_id "
                               "WHERE c.name = 'Horror' ";
     }
+}
+
+
+void MainWindow::on_pb_clear_clicked()
+{
+    ui->tb_result->reset();
 }
 

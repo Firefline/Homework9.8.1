@@ -54,7 +54,7 @@ public:
 
 signals:
 
-   void sig_SendDataFromDB(QTableView *tableV, QString typeR);
+   void sig_SendDataFromDB(QSqlQueryModel * model, QString typeR);
    void sig_SendStatusConnection(bool);
 
 

@@ -82,9 +82,9 @@ void DataBase::RequestToDB(QString request)
     simpleQuery->setHeaderData(0, Qt::Horizontal, tr("Title"));
     simpleQuery->setHeaderData(1, Qt::Horizontal, tr("Description"));
 
-    tableWinget->setModel(simpleQuery);
+    //tableWinget->setModel(simpleQuery);
 
-    emit sig_SendDataFromDB(tableWinget, request);
+    emit sig_SendDataFromDB(simpleQuery, request);
     //tableWinget->show();
 }
 
