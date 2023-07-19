@@ -21,9 +21,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    int typeOfRequest;
+
 
 public slots:
     void ScreenDataFromDB(QSqlQueryModel *widget, QString typeRequest);
+    void ScreenDataFromDBAll(QSqlTableModel *widget, QString typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
 
 
@@ -39,6 +42,7 @@ private slots:
 
 signals:
     void sig_RequestToDb(QString request);
+    void sig_TypeOfRequest(int request);
 
 private:
 

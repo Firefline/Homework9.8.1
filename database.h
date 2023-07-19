@@ -8,6 +8,7 @@
 //#include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QSqlTableModel>
+#include <QSqlTableModel>
 
 
 
@@ -50,11 +51,14 @@ public:
     void RequestToDB(QString request);
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
+    void ReceiveType(int type);
+    int typeOfRequest;
 
 
 signals:
 
    void sig_SendDataFromDB(QSqlQueryModel * model, QString typeR);
+   void sig_SendDataFromDBAll(QSqlTableModel * model, QString typeR);
    void sig_SendStatusConnection(bool);
 
 
@@ -64,6 +68,7 @@ private:
     QSqlDatabase* dataBase;
     QSqlQueryModel* simpleQuery;
     QTableView* tableWinget;
+    QSqlTableModel* notSimpleQuery;
 
 
 };

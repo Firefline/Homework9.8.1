@@ -39,12 +39,14 @@ MainWindow::MainWindow(QWidget *parent)
      * Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
      */
      connect(dataBase, &DataBase::sig_SendDataFromDB, this, &MainWindow::ScreenDataFromDB);
+     connect(dataBase, &DataBase::sig_SendDataFromDBAll, this, &MainWindow::ScreenDataFromDBAll);
 
     /*
      *  Сигнал для подключения к БД
      */
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::on_pb_clear_clicked);
+    connect(this, &MainWindow::sig_TypeOfRequest, dataBase, &DataBase::ReceiveType);
 }
 
 MainWindow::~MainWindow()
@@ -118,6 +120,12 @@ void MainWindow::ScreenDataFromDB(QSqlQueryModel *widget, QString typeRequest)
     ui->tb_result->setModel(widget);
     ui->tb_result->show();
 }
+void MainWindow::ScreenDataFromDBAll(QSqlTableModel *widget, QString typeRequest)
+{
+    ///Тут должен быть код ДЗ
+    ui->tb_result->setModel(widget);
+    ui->tb_result->show();
+}
 /*!
  * \brief Метод изменяет стотояние формы в зависимости от статуса подключения к БД
  * \param status
@@ -145,12 +153,14 @@ void MainWindow::on_cb_category_currentIndexChanged(int index)
 {
     if (index == 0)
     {
+        emit sig_TypeOfRequest(0);
         request = "SELECT title, description  FROM film f "
                               "JOIN film_category fc on f.film_id = fc.film_id "
                               "JOIN category c on c.category_id  = fc.category_id ";
     }
     if (index == 1)
     {
+        emit sig_TypeOfRequest(1);
         request = "SELECT title, description  FROM film f "
                               "JOIN film_category fc on f.film_id = fc.film_id "
                               "JOIN category c on c.category_id  = fc.category_id "
@@ -158,6 +168,7 @@ void MainWindow::on_cb_category_currentIndexChanged(int index)
     }
     if (index == 2)
     {
+        emit sig_TypeOfRequest(2);
         request = "SELECT title, description  FROM film f "
                               "JOIN film_category fc on f.film_id = fc.film_id "
                               "JOIN category c on c.category_id  = fc.category_id "

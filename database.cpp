@@ -6,6 +6,7 @@ DataBase::DataBase(QObject *parent)
 
     dataBase = new QSqlDatabase();
     simpleQuery = new QSqlQueryModel();
+    notSimpleQuery = new QSqlTableModel();
     tableWinget = new QTableView();
 
 
@@ -16,6 +17,7 @@ DataBase::~DataBase()
     delete dataBase;
     delete simpleQuery;
     delete tableWinget;
+    delete notSimpleQuery;
 }
 
 /*!
@@ -69,23 +71,49 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
  * \param request - SQL запрос
  * \return
  */
+void DataBase::ReceiveType(int type)
+{
+    if (type == 0)
+    {
+        typeOfRequest = 0;
+    }
+    if (type == 1)
+    {
+        typeOfRequest = 1;
+    }
+    if (type == 2)
+    {
+        typeOfRequest = 2;
+    }
+}
 void DataBase::RequestToDB(QString request)
 {
 
     ///Тут должен быть код ДЗ
 
-    simpleQuery->setQuery (request, *dataBase);
-    if (simpleQuery->lastError().isValid())
+    if (typeOfRequest == 0)
     {
-        qDebug() << simpleQuery->lastError();
+        notSimpleQuery->setTable("film");
+        notSimpleQuery->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        notSimpleQuery->select();
+        notSimpleQuery->setHeaderData(0, Qt::Horizontal, tr("title"));
+        notSimpleQuery->setHeaderData(1, Qt::Horizontal, tr("description"));
+
+        emit sig_SendDataFromDBAll(notSimpleQuery, request);
     }
-    simpleQuery->setHeaderData(0, Qt::Horizontal, tr("Title"));
-    simpleQuery->setHeaderData(1, Qt::Horizontal, tr("Description"));
+    if (typeOfRequest == 1 || typeOfRequest == 2)
+    {
+        simpleQuery->setQuery (request, *dataBase);
+        if (simpleQuery->lastError().isValid())
+        {
+            qDebug() << simpleQuery->lastError();
+        }
+        simpleQuery->setHeaderData(0, Qt::Horizontal, tr("Title"));
+        simpleQuery->setHeaderData(1, Qt::Horizontal, tr("Description"));
 
-    //tableWinget->setModel(simpleQuery);
+        emit sig_SendDataFromDB(simpleQuery, request);
+    }
 
-    emit sig_SendDataFromDB(simpleQuery, request);
-    //tableWinget->show();
 }
 
 /*!
