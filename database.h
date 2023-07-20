@@ -30,9 +30,9 @@ enum fieldsForConnect{
 //Типы запросов
 enum requestType{
 
-    requestAllFilms = 1,
-    requestComedy   = 2,
-    requestHorrors  = 3
+    requestAllFilms = 0,
+    requestComedy   = 1,
+    requestHorrors  = 2
 
 };
 
@@ -52,7 +52,7 @@ public:
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
     void ReceiveType(int type);
-    int typeOfRequest;
+    int typeOfRequest = 0;
 
 
 signals:

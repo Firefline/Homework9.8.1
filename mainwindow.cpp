@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
      *  Сигнал для подключения к БД
      */
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
-    connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::on_pb_clear_clicked);
+    //connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::on_pb_clear_clicked);
     connect(this, &MainWindow::sig_TypeOfRequest, dataBase, &DataBase::ReceiveType);
 }
 

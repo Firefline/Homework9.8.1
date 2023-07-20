@@ -46,14 +46,14 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
     dataBase->setPassword(data[pass]);
     dataBase->setPort(data[port].toInt());
 
-
     ///Тут должен быть код ДЗ
-
 
     bool status;
     status = dataBase->open( );
-    emit sig_SendStatusConnection(status);
 
+    QSqlTableModel notSimpleQuery = QSqlTableModel(this, *dataBase);
+
+    emit sig_SendStatusConnection(status);
 }
 /*!
  * \brief Метод производит отключение от БД
@@ -94,7 +94,6 @@ void DataBase::RequestToDB(QString request)
     if (typeOfRequest == 0)
     {
         notSimpleQuery->setTable("film");
-        notSimpleQuery->setEditStrategy(QSqlTableModel::OnManualSubmit);
         notSimpleQuery->select();
         notSimpleQuery->setHeaderData(0, Qt::Horizontal, tr("title"));
         notSimpleQuery->setHeaderData(1, Qt::Horizontal, tr("description"));
