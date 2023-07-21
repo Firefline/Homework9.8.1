@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     dataDb = new DbData(this);
     dataBase = new DataBase(this);
     msg = new QMessageBox(this);
+    forCleaning = new QSqlTableModel;
 
     //Установим размер вектора данных для подключения к БД
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
@@ -52,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete forCleaning;
 }
 
 /*!
@@ -118,12 +120,26 @@ void MainWindow::ScreenDataFromDB(QSqlQueryModel *widget, QString typeRequest)
 {
     ///Тут должен быть код ДЗ
     ui->tb_result->setModel(widget);
+    ui->tb_result->showColumn(0);
     ui->tb_result->show();
 }
 void MainWindow::ScreenDataFromDBAll(QSqlTableModel *widget, QString typeRequest)
 {
     ///Тут должен быть код ДЗ
     ui->tb_result->setModel(widget);
+    ui->tb_result->hideColumn(0);
+    ui->tb_result->hideColumn(3);
+    ui->tb_result->hideColumn(4);
+    ui->tb_result->hideColumn(5);
+    ui->tb_result->hideColumn(6);
+    ui->tb_result->hideColumn(7);
+    ui->tb_result->hideColumn(8);
+    ui->tb_result->hideColumn(9);
+    ui->tb_result->hideColumn(10);
+    ui->tb_result->hideColumn(11);
+    ui->tb_result->hideColumn(12);
+    ui->tb_result->hideColumn(13);
+    ui->tb_result->hideColumn(14);
     ui->tb_result->show();
 }
 /*!
@@ -179,6 +195,7 @@ void MainWindow::on_cb_category_currentIndexChanged(int index)
 
 void MainWindow::on_pb_clear_clicked()
 {
-    ui->tb_result->reset();
+    ui->tb_result->setModel(forCleaning);
+    ui->tb_result->show();
 }
 

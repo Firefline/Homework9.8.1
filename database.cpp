@@ -6,7 +6,6 @@ DataBase::DataBase(QObject *parent)
 
     dataBase = new QSqlDatabase();
     simpleQuery = new QSqlQueryModel();
-    notSimpleQuery = new QSqlTableModel();
     tableWinget = new QTableView();
 
 
@@ -50,9 +49,7 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 
     bool status;
     status = dataBase->open( );
-
-    QSqlTableModel notSimpleQuery = QSqlTableModel(this, *dataBase);
-
+    notSimpleQuery = new QSqlTableModel(this, *dataBase);
     emit sig_SendStatusConnection(status);
 }
 /*!
@@ -94,9 +91,10 @@ void DataBase::RequestToDB(QString request)
     if (typeOfRequest == 0)
     {
         notSimpleQuery->setTable("film");
+        //notSimpleQuery->select();
+        notSimpleQuery->setHeaderData(1, Qt::Horizontal, tr("Title"));
+        notSimpleQuery->setHeaderData(2, Qt::Horizontal, tr("Description"));
         notSimpleQuery->select();
-        notSimpleQuery->setHeaderData(0, Qt::Horizontal, tr("title"));
-        notSimpleQuery->setHeaderData(1, Qt::Horizontal, tr("description"));
 
         emit sig_SendDataFromDBAll(notSimpleQuery, request);
     }

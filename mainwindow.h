@@ -52,6 +52,7 @@ private:
     DbData *dataDb;
     DataBase* dataBase;
     QMessageBox* msg;
+    QSqlTableModel* forCleaning;
 
     QString request = "SELECT title, description  FROM film f "
                       "JOIN film_category fc on f.film_id = fc.film_id "
